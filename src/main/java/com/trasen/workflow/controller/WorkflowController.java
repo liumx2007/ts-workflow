@@ -86,13 +86,20 @@ public class WorkflowController {
 
 
     @RequestMapping(value="/getTodoMsgList/{name}",method = RequestMethod.POST)
-    public Map<String,Object> getTask(@PathVariable String name){
+    public Map<String,Object> getTask(@PathVariable String name,@RequestBody Map<String,Object> param){
         //结果集
         Map<String,Object> result = new HashMap();
         result.put("msg","成功");
         result.put("code",1);
         try {
-            List<Task> tasks = camunda.getTaskService().createTaskQuery().taskAssignee(name).list();
+            List<Task> tasks ;
+            if(param!=null&&param.get("htOwner")!=null){
+                tasks = camunda.getTaskService().createTaskQuery().taskAssignee(name)
+                        .processVariableValueEquals("htOwner", param.get("htOwner").toString()).list();
+
+            }else{
+                tasks = camunda.getTaskService().createTaskQuery().taskAssignee(name).list();
+            }
             System.out.println("======获取["+name+"]待办消息["+tasks.size()+"]条=====");
             List<MsgDTO> msgDTOList = new ArrayList<>();
             for(Task task : tasks){
