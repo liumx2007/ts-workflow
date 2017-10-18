@@ -11,5 +11,8 @@ public class ProcessConstants {
   
   public static final String MSG_NAME_GoodsShipped = "Message_GoodsShipped";
 
+  public static final String VAR_NAME_htNo = "htNo";
+  public static final String VAR_NAME_handOverId = "handOverId";
+
   
 }

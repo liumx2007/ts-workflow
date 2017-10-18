@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.Date;
+import java.util.Map;
 
 /**
  * Created by zhangxiahui on 17/10/17.
@@ -20,4 +21,5 @@ public class MsgDTO {
     private String processKey;
     private String taskId;
     private String taskKey;
+    private Map<String, Object> variables;
 }

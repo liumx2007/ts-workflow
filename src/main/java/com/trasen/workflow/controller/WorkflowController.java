@@ -9,10 +9,7 @@ import org.camunda.bpm.engine.ProcessEngine;
 import org.camunda.bpm.engine.runtime.ProcessInstance;
 import org.camunda.bpm.engine.task.Task;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -35,7 +32,7 @@ public class WorkflowController {
     private static final Logger logger = Logger.getLogger(WorkflowController.class);
 
 
-    @RequestMapping(value="/process/{key}",method = RequestMethod.GET)
+    @RequestMapping(value="/process/{key}",method = RequestMethod.POST)
     public Map<String,Object> queryItem(@PathVariable String key){
         //结果集
         Map<String,Object> result = new HashMap();
@@ -61,7 +58,34 @@ public class WorkflowController {
     }
 
 
-    @RequestMapping(value="/getTodoMsgList/{name}",method = RequestMethod.GET)
+    @RequestMapping(value="/startProcess/{key}",method = RequestMethod.POST)
+    public Map<String,Object> queryItem(@PathVariable String key,@RequestBody Map<String,Object> param){
+        //结果集
+        Map<String,Object> result = new HashMap();
+        result.put("msg","工作流实例开始执行");
+        result.put("code",1);
+        try {
+            logger.info("======提交工作流key:"+key);
+            ProcessInstance processInstance = camunda.getRuntimeService().startProcessInstanceByKey(key, param);
+            ProcessInstDTO processInstDTO = new ProcessInstDTO();
+            processInstDTO.setId(processInstance.getId());
+            processInstDTO.setBusinessKey(processInstance.getBusinessKey());
+            processInstDTO.setCaseInstanceId(processInstance.getCaseInstanceId());
+            processInstDTO.setProcessDefinitionId(processInstance.getProcessDefinitionId());
+            processInstDTO.setProcessInstanceId(processInstance.getProcessInstanceId());
+            processInstDTO.setTenantId(processInstance.getTenantId());
+            result.put("processInstance",processInstDTO);
+        } catch (Exception e) {
+            logger.error("执行工作流实例异常" + e.getMessage(), e);
+            result.put("msg",e.getMessage());
+        }
+        return result;
+    }
+
+
+
+
+    @RequestMapping(value="/getTodoMsgList/{name}",method = RequestMethod.POST)
     public Map<String,Object> getTask(@PathVariable String name){
         //结果集
         Map<String,Object> result = new HashMap();
@@ -81,6 +105,8 @@ public class WorkflowController {
                 vo.setProcessId(task.getProcessInstanceId());
                 vo.setTaskKey(task.getTaskDefinitionKey());
                 vo.setTaskId(task.getId());
+                Map<String,Object> variables = camunda.getRuntimeService().getVariables(task.getExecutionId());
+                vo.setVariables(variables);
                 msgDTOList.add(vo);
             }
             result.put("list",msgDTOList);
@@ -91,15 +117,12 @@ public class WorkflowController {
         return result;
     }
 
-    @RequestMapping(value="/task/{id}/complete",method = RequestMethod.GET)
+    @RequestMapping(value="/task/{id}/complete",method = RequestMethod.POST)
     public Map<String,Object> complete(@PathVariable String id){
         //结果集
         Map<String,Object> result = new HashMap();
         result.put("msg","提交成功");
         result.put("code",1);
-        Map<String, Object> variables = new HashMap<String, Object>();
-        variables.put("type", 1);
-
         try{
 
             Task task = camunda.getTaskService().createTaskQuery().taskId(id).singleResult();
@@ -113,6 +136,9 @@ public class WorkflowController {
             vo.setProcessId(task.getProcessInstanceId());
             vo.setTaskKey(task.getTaskDefinitionKey());
             vo.setTaskId(task.getId());
+            Map<String,Object> variables = camunda.getRuntimeService().getVariables(task.getExecutionId());
+            variables.put("type", 1);
+            vo.setVariables(variables);
             result.put("task",vo);
             camunda.getTaskService().complete(id, variables);
         } catch (Exception e) {
@@ -122,14 +148,12 @@ public class WorkflowController {
         return result;
     }
 
-    @RequestMapping(value="/task/{id}/return",method = RequestMethod.GET)
+    @RequestMapping(value="/task/{id}/return",method = RequestMethod.POST)
     public Map<String,Object> returnNode(@PathVariable String id){
         //结果集
         Map<String,Object> result = new HashMap();
         result.put("msg","驳回成功");
         result.put("code",1);
-        Map<String, Object> variables = new HashMap<String, Object>();
-        variables.put("type", 2);
         try{
             Task task = camunda.getTaskService().createTaskQuery().taskId(id).singleResult();
             MsgDTO vo = new MsgDTO();
@@ -141,6 +165,9 @@ public class WorkflowController {
             vo.setProcessId(task.getProcessInstanceId());
             vo.setTaskKey(task.getTaskDefinitionKey());
             vo.setTaskId(task.getId());
+            Map<String,Object> variables = camunda.getRuntimeService().getVariables(task.getExecutionId());
+            variables.put("type", 2);
+            vo.setVariables(variables);
             result.put("task",vo);
             camunda.getTaskService().complete(id, variables);
         } catch (Exception e) {
