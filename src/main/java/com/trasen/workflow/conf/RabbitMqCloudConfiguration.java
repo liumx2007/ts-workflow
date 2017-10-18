@@ -8,8 +8,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
 
-@Configuration
-@Profile("cloud")
+//@Configuration
+//@Profile("cloud")
 public class RabbitMqCloudConfiguration extends AbstractCloudConfig {
 
   @Bean

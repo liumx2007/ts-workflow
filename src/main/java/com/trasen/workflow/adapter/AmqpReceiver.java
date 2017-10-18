@@ -13,8 +13,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.UUID;
 
-@Component
-@Profile("!test")
+//@Component
+//@Profile("!test")
 public class AmqpReceiver {
 
   @Autowired
@@ -31,11 +31,11 @@ public class AmqpReceiver {
    * Dummy method to handle the shipGoods command message - as we do not have a 
    * shipping system available in this small example
    */
-  @RabbitListener(bindings = @QueueBinding( //
+  /*@RabbitListener(bindings = @QueueBinding( //
       value = @Queue(value = "shipping_create_test", durable = "true"), //
       exchange = @Exchange(value = "shipping", type = "topic", durable = "true"), //
       key = "*"))
-  @Transactional  
+  @Transactional  */
   public void dummyShipGoodsCommand(String orderId) {
     // and call back directly with a generated transactionId
     handleGoodsShippedEvent(orderId, UUID.randomUUID().toString());
