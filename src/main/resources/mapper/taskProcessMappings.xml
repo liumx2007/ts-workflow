@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+  
+<mapper namespace="taskProcess">
+  
+  <select id="getTaskInstList" resultType="com.trasen.workflow.model.TaskInstDTO" parameterType="String">
+    select ID_,TASK_DEF_KEY_,PROC_DEF_KEY_,NAME_,ASSIGNEE_,START_TIME_,END_TIME_,DELETE_REASON_ from ACT_HI_TASKINST
+    where PROC_INST_ID_=#{processId} order by START_TIME_
+  </select>
+
+</mapper>
