@@ -212,6 +212,32 @@ public class WorkflowController {
         }
         return result;
     }
-
-
+    @RequestMapping(value="/getTask/{taskId}",method = RequestMethod.GET)
+    public Map<String,Object> getTask(@PathVariable String taskId){
+        //结果集
+        Map<String,Object> result = new HashMap();
+        result.put("msg","查询节点ID成功");
+        result.put("code",0);
+        try{
+            Task task = camunda.getTaskService().createTaskQuery().taskId(taskId).singleResult();
+            MsgDTO vo = new MsgDTO();
+            vo.setName(task.getAssignee());
+            vo.setTitle(task.getName());
+            vo.setMsgContent(task.getDescription());
+            vo.setSendTime(task.getCreateTime());
+            vo.setProcessKey(task.getProcessDefinitionId());
+            vo.setProcessId(task.getProcessInstanceId());
+            vo.setTaskKey(task.getTaskDefinitionKey());
+            vo.setTaskId(task.getId());
+            Map<String,Object> variables = camunda.getRuntimeService().getVariables(task.getExecutionId());
+            vo.setVariables(variables);
+            result.put("task",vo);
+            result.put("code",1);
+        } catch (Exception e) {
+            logger.error("查询节点ID" + e.getMessage(), e);
+            result.put("code",0);
+            result.put("msg",e.getMessage());
+        }
+        return result;
+    }
 }
