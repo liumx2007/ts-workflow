@@ -37,7 +37,7 @@ public class WorkflowController {
         //结果集
         Map<String,Object> result = new HashMap();
         result.put("msg","工作流实例开始执行");
-        result.put("code",1);
+        result.put("code",0);
         try {
             logger.info("======提交工作流key:"+key);
 
@@ -50,8 +50,10 @@ public class WorkflowController {
             processInstDTO.setProcessInstanceId(processInstance.getProcessInstanceId());
             processInstDTO.setTenantId(processInstance.getTenantId());
             result.put("processInstance",processInstDTO);
+            result.put("code",1);
         } catch (Exception e) {
             logger.error("执行工作流实例异常" + e.getMessage(), e);
+            result.put("code",0);
             result.put("msg",e.getMessage());
         }
         return result;
@@ -63,7 +65,7 @@ public class WorkflowController {
         //结果集
         Map<String,Object> result = new HashMap();
         result.put("msg","工作流实例开始执行");
-        result.put("code",1);
+        result.put("code",0);
         try {
             logger.info("======提交工作流key:"+key);
             ProcessInstance processInstance = camunda.getRuntimeService().startProcessInstanceByKey(key, param);
@@ -75,8 +77,10 @@ public class WorkflowController {
             processInstDTO.setProcessInstanceId(processInstance.getProcessInstanceId());
             processInstDTO.setTenantId(processInstance.getTenantId());
             result.put("processInstance",processInstDTO);
+            result.put("code",1);
         } catch (Exception e) {
             logger.error("执行工作流实例异常" + e.getMessage(), e);
+            result.put("code",0);
             result.put("msg",e.getMessage());
         }
         return result;
@@ -90,7 +94,7 @@ public class WorkflowController {
         //结果集
         Map<String,Object> result = new HashMap();
         result.put("msg","成功");
-        result.put("code",1);
+        result.put("code",0);
         try {
             List<Task> tasks ;
             if(param!=null&&param.get("htOwner")!=null){
@@ -117,8 +121,10 @@ public class WorkflowController {
                 msgDTOList.add(vo);
             }
             result.put("list",msgDTOList);
+            result.put("code",1);
         } catch (Exception e) {
             logger.error("获取待办消息异常" + e.getMessage(), e);
+            result.put("code",0);
             result.put("msg",e.getMessage());
         }
         return result;
@@ -129,7 +135,7 @@ public class WorkflowController {
         //结果集
         Map<String,Object> result = new HashMap();
         result.put("msg","提交成功");
-        result.put("code",1);
+        result.put("code",0);
         try{
 
             Task task = camunda.getTaskService().createTaskQuery().taskId(id).singleResult();
@@ -148,8 +154,10 @@ public class WorkflowController {
             vo.setVariables(variables);
             result.put("task",vo);
             camunda.getTaskService().complete(id, variables);
+            result.put("code",1);
         } catch (Exception e) {
             logger.error("用户服务节提交异常" + e.getMessage(), e);
+            result.put("code",0);
             result.put("msg",e.getMessage());
         }
         return result;
@@ -160,7 +168,7 @@ public class WorkflowController {
         //结果集
         Map<String,Object> result = new HashMap();
         result.put("msg","驳回成功");
-        result.put("code",1);
+        result.put("code",0);
         try{
             Task task = camunda.getTaskService().createTaskQuery().taskId(id).singleResult();
             MsgDTO vo = new MsgDTO();
@@ -177,8 +185,10 @@ public class WorkflowController {
             vo.setVariables(variables);
             result.put("task",vo);
             camunda.getTaskService().complete(id, variables);
+            result.put("code",1);
         } catch (Exception e) {
             logger.error("用户节点驳回异常" + e.getMessage(), e);
+            result.put("code",0);
             result.put("msg",e.getMessage());
         }
         return result;
@@ -189,14 +199,15 @@ public class WorkflowController {
         //结果集
         Map<String,Object> result = new HashMap();
         result.put("msg","查询进度成功");
-        result.put("code",1);
+        result.put("code",0);
         try{
 
             List<TaskInstDTO> list = tasklistService.getTaskInstList(processId);
             result.put("list",list);
-
+            result.put("code",1);
         } catch (Exception e) {
             logger.error("查询进程实例进度异常" + e.getMessage(), e);
+            result.put("code",0);
             result.put("msg",e.getMessage());
         }
         return result;
