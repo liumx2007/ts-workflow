@@ -212,7 +212,7 @@ public class WorkflowController {
         }
         return result;
     }
-    @RequestMapping(value="/getTask/{taskId}",method = RequestMethod.GET)
+    @RequestMapping(value="/getTask/{taskId}",method = RequestMethod.POST)
     public Map<String,Object> getTask(@PathVariable String taskId){
         //结果集
         Map<String,Object> result = new HashMap();
