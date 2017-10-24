@@ -194,7 +194,7 @@ public class WorkflowController {
         return result;
     }
 
-    @RequestMapping(value="/queryProcess/{processId}",method = RequestMethod.GET)
+    @RequestMapping(value="/queryProcess/{processId}",method = RequestMethod.POST)
     public Map<String,Object> queryProcess(@PathVariable String processId){
         //结果集
         Map<String,Object> result = new HashMap();
