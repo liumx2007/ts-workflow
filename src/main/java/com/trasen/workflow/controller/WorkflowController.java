@@ -6,6 +6,7 @@ import com.trasen.workflow.model.TaskInstDTO;
 import com.trasen.workflow.service.TasklistService;
 import org.apache.log4j.Logger;
 import org.camunda.bpm.engine.ProcessEngine;
+import org.camunda.bpm.engine.history.HistoricTaskInstance;
 import org.camunda.bpm.engine.runtime.ProcessInstance;
 import org.camunda.bpm.engine.task.Task;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -139,7 +140,6 @@ public class WorkflowController {
         try{
 
             Task task = camunda.getTaskService().createTaskQuery().taskId(id).singleResult();
-
             MsgDTO vo = new MsgDTO();
             vo.setName(task.getAssignee());
             vo.setTitle(task.getName());
@@ -152,8 +152,19 @@ public class WorkflowController {
             Map<String,Object> variables = camunda.getRuntimeService().getVariables(task.getExecutionId());
             variables.put("type", 1);
             vo.setVariables(variables);
-            result.put("task",vo);
+
             camunda.getTaskService().complete(id, variables);
+
+            List<HistoricTaskInstance>  subList = camunda.getHistoryService().createHistoricTaskInstanceQuery().processInstanceId(task.getProcessInstanceId()).list();
+            for(HistoricTaskInstance hisTask : subList){
+                if(hisTask.getDeleteReason()==null){
+                    vo.setSubName(hisTask.getAssignee());
+                    vo.setSubTitle(hisTask.getName());
+                    vo.setSubTaskId(hisTask.getId());
+                    vo.setSubTaskKey(hisTask.getTaskDefinitionKey());
+                }
+            }
+            result.put("task",vo);
             result.put("code",1);
         } catch (Exception e) {
             logger.error("用户服务节提交异常" + e.getMessage(), e);
@@ -183,8 +194,19 @@ public class WorkflowController {
             Map<String,Object> variables = camunda.getRuntimeService().getVariables(task.getExecutionId());
             variables.put("type", 2);
             vo.setVariables(variables);
-            result.put("task",vo);
+
             camunda.getTaskService().complete(id, variables);
+
+            List<HistoricTaskInstance>  subList = camunda.getHistoryService().createHistoricTaskInstanceQuery().processInstanceId(task.getProcessInstanceId()).list();
+            for(HistoricTaskInstance hisTask : subList){
+                if(hisTask.getDeleteReason()==null){
+                    vo.setSubName(hisTask.getAssignee());
+                    vo.setSubTitle(hisTask.getName());
+                    vo.setSubTaskId(hisTask.getId());
+                    vo.setSubTaskKey(hisTask.getTaskDefinitionKey());
+                }
+            }
+            result.put("task",vo);
             result.put("code",1);
         } catch (Exception e) {
             logger.error("用户节点驳回异常" + e.getMessage(), e);
@@ -201,7 +223,6 @@ public class WorkflowController {
         result.put("msg","查询进度成功");
         result.put("code",0);
         try{
-
             List<TaskInstDTO> list = tasklistService.getTaskInstList(processId);
             result.put("list",list);
             result.put("code",1);

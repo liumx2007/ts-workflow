@@ -22,4 +22,8 @@ public class MsgDTO {
     private String taskId;
     private String taskKey;
     private Map<String, Object> variables;
+    private String subName;
+    private String subTitle;
+    private String subTaskId;
+    private String subTaskKey;
 }
