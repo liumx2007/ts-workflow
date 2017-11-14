@@ -33,19 +33,19 @@
     <bpmn:sequenceFlow id="SequenceFlow_1f8abmb" name="通过" sourceRef="ExclusiveGateway_1x5yktc" targetRef="EndEvent_02x6568">
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${type==1}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
-    <bpmn:userTask id="change_sale" name="销售提交增补变更申请" camunda:assignee="sale">
+    <bpmn:userTask id="change_sale" name="待销售提交增补变更申请" camunda:assignee="sale">
       <bpmn:documentation>您有一个增补变更申请待提交。</bpmn:documentation>
       <bpmn:incoming>SequenceFlow_0wfomik</bpmn:incoming>
       <bpmn:incoming>SequenceFlow_0isg9ok</bpmn:incoming>
       <bpmn:incoming>SequenceFlow_099cjqb</bpmn:incoming>
       <bpmn:outgoing>SequenceFlow_1wwhri3</bpmn:outgoing>
     </bpmn:userTask>
-    <bpmn:userTask id="change_manager" name="销售经理审批增补变更" camunda:assignee="SM">
+    <bpmn:userTask id="change_manager" name="待销售经理审批增补变更" camunda:assignee="SM">
       <bpmn:documentation>您有一个增补变更申请需要审批。</bpmn:documentation>
       <bpmn:incoming>SequenceFlow_1wwhri3</bpmn:incoming>
       <bpmn:outgoing>SequenceFlow_1av5ftt</bpmn:outgoing>
     </bpmn:userTask>
-    <bpmn:userTask id="change_mg" name="总经理审批增补变更" camunda:assignee="GM">
+    <bpmn:userTask id="change_mg" name="待总经理审批增补变更" camunda:assignee="GM">
       <bpmn:incoming>SequenceFlow_1sht6dt</bpmn:incoming>
       <bpmn:outgoing>SequenceFlow_09f1lmm</bpmn:outgoing>
     </bpmn:userTask>

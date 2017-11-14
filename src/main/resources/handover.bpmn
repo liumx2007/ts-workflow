@@ -47,35 +47,35 @@
     <bpmn:sequenceFlow id="SequenceFlow_1lma78r" name="通过" sourceRef="ExclusiveGateway_0aj33hk" targetRef="EndEvent_0g6cclp">
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${type==1}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
-    <bpmn:userTask id="sale_commit" name="销售提交交接单" camunda:assignee="sale">
+    <bpmn:userTask id="sale_commit" name="待销售提交交接单" camunda:assignee="sale">
       <bpmn:documentation>销售提交交接单</bpmn:documentation>
       <bpmn:incoming>SequenceFlow_07jq76x</bpmn:incoming>
       <bpmn:incoming>SequenceFlow_0izs89e</bpmn:incoming>
       <bpmn:outgoing>SequenceFlow_111de55</bpmn:outgoing>
     </bpmn:userTask>
-    <bpmn:userTask id="nk_check" name="内控审批" camunda:assignee="NK">
+    <bpmn:userTask id="nk_check" name="待内控审批" camunda:assignee="NK">
       <bpmn:documentation>您有一个交接单需要审批，并分解产值。</bpmn:documentation>
       <bpmn:incoming>SequenceFlow_0a1pkaf</bpmn:incoming>
       <bpmn:incoming>SequenceFlow_1lzup09</bpmn:incoming>
       <bpmn:incoming>SequenceFlow_111de55</bpmn:incoming>
       <bpmn:outgoing>SequenceFlow_1udsbpv</bpmn:outgoing>
     </bpmn:userTask>
-    <bpmn:userTask id="em_check" name="企管部经理审批" camunda:assignee="EM">
+    <bpmn:userTask id="em_check" name="待企管部经理审批" camunda:assignee="EM">
       <bpmn:documentation>请您确认交接单内容，以及产值分配。</bpmn:documentation>
       <bpmn:incoming>SequenceFlow_0ucmims</bpmn:incoming>
       <bpmn:outgoing>SequenceFlow_0p3pisz</bpmn:outgoing>
     </bpmn:userTask>
-    <bpmn:userTask id="pd_check" name="生产部门确认" camunda:assignee="PD">
+    <bpmn:userTask id="pd_check" name="待生产部门确认" camunda:assignee="PD">
       <bpmn:documentation>请确认交接单中自己的产值分配。</bpmn:documentation>
       <bpmn:incoming>SequenceFlow_0bmqqr0</bpmn:incoming>
       <bpmn:outgoing>SequenceFlow_1x5ikqy</bpmn:outgoing>
     </bpmn:userTask>
-    <bpmn:userTask id="pm_check" name="项目管理组确认" camunda:assignee="PM">
+    <bpmn:userTask id="pm_check" name="待项目管理组确认" camunda:assignee="PM">
       <bpmn:documentation>请确认交接单是否完整。</bpmn:documentation>
       <bpmn:incoming>SequenceFlow_1x5ikqy</bpmn:incoming>
       <bpmn:outgoing>SequenceFlow_145wis9</bpmn:outgoing>
     </bpmn:userTask>
-    <bpmn:userTask id="gm_check" name="总经理审核" camunda:assignee="GM">
+    <bpmn:userTask id="gm_check" name="待总经理审核" camunda:assignee="GM">
       <bpmn:documentation>请最终审核交接单</bpmn:documentation>
       <bpmn:incoming>SequenceFlow_145wis9</bpmn:incoming>
       <bpmn:outgoing>SequenceFlow_1m5uc1y</bpmn:outgoing>
