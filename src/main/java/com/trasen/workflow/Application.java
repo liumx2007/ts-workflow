@@ -10,6 +10,9 @@ import org.camunda.bpm.engine.filter.Filter;
 import org.camunda.bpm.engine.identity.Group;
 import org.camunda.bpm.engine.identity.User;
 import org.camunda.bpm.spring.boot.starter.annotation.EnableProcessApplication;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -23,7 +26,10 @@ import static org.camunda.bpm.engine.authorization.Resources.FILTER;
 
 @SpringBootApplication
 @EnableProcessApplication
-public class Application {
+public class Application implements CommandLineRunner{
+
+
+  private Logger logger = LoggerFactory.getLogger(Application.class);
 
   public static void main(String... args) {
     SpringApplication.run(Application.class, args);
@@ -32,6 +38,11 @@ public class Application {
     //ProcessEngine engine = BpmPlatform.getDefaultProcessEngine();
     //createDefaultUser(engine);
     //setCamundaEELicenseKey(engine);
+  }
+
+  @Override
+  public void run(String... strings) throws Exception {
+    logger.info("服务启动完成!");
   }
 
   public static void createDefaultUser(ProcessEngine engine) {
@@ -92,5 +103,6 @@ public class Application {
   public static void setCamundaEELicenseKey(ProcessEngine engine) {
     engine.getManagementService().setProperty("camunda-license-key", "xxxx");
   }
+
 
 }
