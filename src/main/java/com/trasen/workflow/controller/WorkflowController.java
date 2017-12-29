@@ -70,6 +70,10 @@ public class WorkflowController {
         try {
             logger.info("======提交工作流key:"+key);
             ProcessInstance processInstance = camunda.getRuntimeService().startProcessInstanceByKey(key, param);
+            Task task = camunda.getTaskService().createTaskQuery().processInstanceId(processInstance.getId()).singleResult();
+            Map<String,Object> variables = camunda.getRuntimeService().getVariables(task.getExecutionId());
+            variables.put("type", 1);
+            camunda.getTaskService().complete(task.getId(), variables);
             ProcessInstDTO processInstDTO = new ProcessInstDTO();
             processInstDTO.setId(processInstance.getId());
             processInstDTO.setBusinessKey(processInstance.getBusinessKey());
