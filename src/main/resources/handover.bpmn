@@ -29,15 +29,15 @@
       <bpmn:incoming>SequenceFlow_111de55</bpmn:incoming>
       <bpmn:outgoing>SequenceFlow_1udsbpv</bpmn:outgoing>
     </bpmn:userTask>
-    <bpmn:sequenceFlow id="SequenceFlow_0ijtzoe" name="通过" sourceRef="ExclusiveGateway_18ezndc" targetRef="UserTask_1c2b4ok">
+    <bpmn:sequenceFlow id="SequenceFlow_0ijtzoe" name="通过" sourceRef="ExclusiveGateway_18ezndc" targetRef="pd_check">
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${type==1}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
-    <bpmn:userTask id="UserTask_1c2b4ok" name="生产部门确认" camunda:assignee="PD">
+    <bpmn:userTask id="pd_check" name="生产部门确认" camunda:assignee="PD">
       <bpmn:documentation>请确认交接单中自己的产值分配。</bpmn:documentation>
       <bpmn:incoming>SequenceFlow_0ijtzoe</bpmn:incoming>
       <bpmn:outgoing>SequenceFlow_1irqq33</bpmn:outgoing>
     </bpmn:userTask>
-    <bpmn:sequenceFlow id="SequenceFlow_1irqq33" sourceRef="UserTask_1c2b4ok" targetRef="EndEvent_0g6cclp" />
+    <bpmn:sequenceFlow id="SequenceFlow_1irqq33" sourceRef="pd_check" targetRef="EndEvent_0g6cclp" />
   </bpmn:process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
     <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="handover">
@@ -101,7 +101,7 @@
           <dc:Bounds x="315.50000000000006" y="268.2058823529412" width="22" height="13" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNShape id="UserTask_1c2b4ok_di" bpmnElement="UserTask_1c2b4ok">
+      <bpmndi:BPMNShape id="UserTask_1c2b4ok_di" bpmnElement="pd_check">
         <dc:Bounds x="258" y="309" width="100" height="80" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="SequenceFlow_1irqq33_di" bpmnElement="SequenceFlow_1irqq33">
